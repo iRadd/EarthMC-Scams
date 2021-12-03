@@ -1,5 +1,5 @@
 ### EarthMC Scams Discord Bot
-[![]https://img.shields.io/appveyor/build/iRadd/EarthMC-Scams]
+https://img.shields.io/appveyor/build/iRadd/EarthMC-Scams
 
 EarthMC Scams is a open source Discord bot coded in JavaScript with [Discord.js](https://discord.js.org) and [QuickDB](https://quickdb.js.org/) by [iRadd](https://github.com/iRadd).  
 Feel free to add a star (⭐) to the repository to promote the project and keep up with future updates!
