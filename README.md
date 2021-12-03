@@ -13,14 +13,14 @@ EarthMC is a geopolitical sandbox server for Minecraft Java edition. You can cre
 [EarthMC Website](earthmc.net) [EarthMC Map](earthmc.net/map)
 
 ## What is the EarthMC Scams Bot for?
-Due to the Server's increased popularity, scams have been more common and victims of scammers have increase. 
-EarthMC Scams Bot is **designed** to help people stay safe during trading, with player and shop information.
+Due to the Server's increased popularity, scams have been more common and victims of scammers have increase. EarthMC Scams Bot is **designed** to help people stay safe during trading, with player and shop information.
 
 # Features
 - ⏱️ Easy to use; setup **EarthMC Scams** in your discord server in just a few clicks!
 - 📁 Up to date information; none of the data is outdated, and has a **user based compliment and complaint system**!
 - 💯 User Based Compliment and Complaint System; check how many people complimented (meaning that they reported the user is a verified trader) or complained (meaning that they reported the user is a scammer), check more information about this in our [EarthMC Scams Discord](https://discord.gg/wpFpY4wUyj)
 - 😀 Friendly Mod & Admin Team to assist you with any questions!
+
 ... and more is upcoming! Join the [EarthMC Scams Discord](https://discord.gg/wpFpY4wUyj) to keep up with the latest updates!
 
 This is where earthmc scam bot comes in! It has features like linking and who is commands. If you like or got scammed you can also make a vote on selected user and everyone can see the rating.
