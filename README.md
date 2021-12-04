@@ -41,7 +41,7 @@ git clone https://github.com/iRadd/EarthMC-Scams
 
 * Install dependencies via the NPM Package or Yarn.
 ```sh
-npm install
+npm install 
 ```
 ... or use the shortcut, but both methods work if you are using NPM as your packager.
 ```sh
