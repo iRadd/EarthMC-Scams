@@ -25,4 +25,4 @@ Due to the Server's increased popularity, scams have been more common and victim
 
 This is where earthmc scam bot comes in! It has features like linking and who is commands. If you like or got scammed you can also make a vote on selected user and everyone can see the rating.
 
-Code comming soon, use if you like no credit needed.
+Installation Guide and Wiki is soon!
