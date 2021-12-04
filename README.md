@@ -13,7 +13,8 @@ EarthMC is a geopolitical sandbox server for Minecraft Java edition. You can cre
 [EarthMC Website](earthmc.net) [EarthMC Map](earthmc.net/map)
 
 ## What is the EarthMC Scams Bot for?
-Due to the Server's increased popularity, scams have been more common and victims of scammers have increase. EarthMC Scams Bot is **designed** to help people stay safe during trading, with player and shop information.
+Due to the Server's increased popularity, scams have been more common and victims of scammers have increase. 
+EarthMC Scams Bot is **designed** to help people stay safe during trading, with player and shop information.
 
 # Features
 - ⏱️ Easy to use; setup **EarthMC Scams** in your discord server in just a few clicks!
@@ -23,6 +24,35 @@ Due to the Server's increased popularity, scams have been more common and victim
 
 ... and more is upcoming! Join the [EarthMC Scams Discord](https://discord.gg/wpFpY4wUyj) to keep up with the latest updates!
 
-This is where earthmc scam bot comes in! It has features like linking and who is commands. If you like or got scammed you can also make a vote on selected user and everyone can see the rating.
+## Installation Process
 
-Installation Guide and Wiki is soon!
+* Fork, Clone, or Download this repository; below is the command for the Github App.
+```sh
+git clone https://github.com/iRadd/EarthMC-Scams
+```
+
+* Create a config.json and fill in all of the required configuration settings.
+```json
+{
+	"prefix": "Your Prefix Here",
+	"token": "Input Your Bot Token"
+}
+```
+
+* Install dependencies:
+```sh
+npm install
+```
+... or use the shortcut, but both methods work if you are using NPM as your packager.
+```sh
+npm i
+```
+
+* Start the Bot
+```sh
+node index.js
+```
+... or use the shortcut for the startup method; both methods work but if you edit the package.json, the below one will not work.
+```sh
+node .
+```
