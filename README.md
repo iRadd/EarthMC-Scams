@@ -39,7 +39,7 @@ git clone https://github.com/iRadd/EarthMC-Scams
 }
 ```
 
-* Install dependencies:
+* Install dependencies via the NPM Package or Yarn.
 ```sh
 npm install
 ```
@@ -48,7 +48,7 @@ npm install
 npm i
 ```
 
-* Start the Bot
+* Start the Bot.
 ```sh
 node index.js
 ```
