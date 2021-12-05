@@ -17,7 +17,7 @@ Due to the Server's increased popularity, scams have been more common and victim
 EarthMC Scams Bot is **designed** to help people stay safe during trading, with player and shop information.
 
 # Features
-- ⏱️ Easy to use; setup **EarthMC Scams** in your discord server in just a few clicks!
+- ⏱️ Easy to use; setup **EarthMC Scams** in your discord server in just a few [clicks](https://discord.com/api/oauth2/authorize?client_id=853986993833902140&permissions=2147871808&scope=applications.commands%20bot)!
 - 📁 Up to date information; none of the data is outdated, and has a **user based compliment and complaint system**!
 - 💯 User Based Compliment and Complaint System; check how many people complimented (meaning that they reported the user is a verified trader) or complained (meaning that they reported the user is a scammer), check more information about this in our [EarthMC Scams Discord](https://discord.gg/wpFpY4wUyj)
 - 😀 Friendly Mod & Admin Team to assist you with any questions!
