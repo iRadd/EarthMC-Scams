@@ -2,8 +2,6 @@
 ![](https://img.shields.io/github/last-commit/iRadd/EarthMC-Scams?label=LAST%20UPDATED&style=for-the-badge)
 ![](https://img.shields.io/discord/855047300778164255?color=%237289da&style=for-the-badge)
 ![](https://img.shields.io/github/package-json/v/iRadd/EarthMC-Scams?color=%237289da&label=Version&style=for-the-badge)
-![](https://img.shields.io/github/issues/iRadd/EarthMC-Scams?label=Issues&style=for-the-badge)
-![](https://img.shields.io/github/issues-pr/iRadd/EarthMC-Scams?label=PULL%20REQUESTS&style=for-the-badge)
 
 EarthMC Scams is a open source Discord bot coded in JavaScript with [Discord.js](https://discord.js.org) and [QuickDB](https://quickdb.js.org/) by [@iRadd](https://github.com/iRadd).  
 Feel free to add a star (⭐) to the repository to promote the project and keep up with future updates!
