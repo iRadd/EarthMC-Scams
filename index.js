@@ -18,19 +18,30 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-client.slashCommands = new Collection();
 
-const logs = require('./logs')
+const logs = require('./logs');
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const slashCommandFiles = fs.readdirSync('./slashCommands').filter(file => file.endsWith('.js'));
+
+const slashCommands = [];
+
+client.slashCommands = new Collection();
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
 
+for (const file of slashCommandFiles) {
+	const slashCommand = require(`./slashCommands/${file}`);
+	slashCommands.push(slashCommand.data.toJSON());
+	client.slashCommands.set(slashCommand.data.name, slashCommand);
+}
+
 client.once('ready', () => {
 	console.log('Ready!');
+
 	client.user.setActivity('activity', { type: 'WATCHING' }, { name: `@iRadd scam me of Better Code (SMH) | ${client.guilds.cache.size}`})
 
 	// logs(client)
@@ -45,13 +56,28 @@ client.on('messageCreate', async message => {
 
 	if (!client.commands.has(command)) return;
 
-	if (message.guild.id !== '855047300778164255' && (/*command !== 'who' && */command !== 'help')) return message.channel.send({ content: `> Since EMC Scams is in Alpha, we only allow external servers to use \`.who\` and \`.help\` at this time. We are planning to allow external servers to use other commands within the next few weeks. To use the \`.${command}\`, join the EMC Scams discord; https://discord.gg/P3r5n6TDEN`});
+	if (message.channel.id !== '917222773380755456') return;
 
 	try {
 	 	client.commands.get(command).execute(message, args);
 	 } catch (error) {
 	 	console.error(error);
 	 	message.channel.send({ content: `> There was an error when executing this command\n> If this contiunes to happen, join the [Support Server](https://discord.gg/P3r5n6TDEN)`});
+	}
+});
+
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
+
+	const command = client.slashCommands.get(interaction.commandName);
+
+	if (!command) return;
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
 
