@@ -65,7 +65,12 @@ module.exports = {
 
             const usercomplaint = db.get(`${player.uuid}_complaint_${message.author.id}`)
             const check = db.get(`complainCheck_${message.author.id}`)
-            const timeout = 300000;
+            var timeout = 300000;
+            if (member.roles.cache.some(role => role.name === 'Verified Trader')) {
+            	var timeout = 60000;
+            } else {
+                var timeout = 300000;
+            }
 
             if(usercomplaint === 1) {
               db.delete(`${player.uuid}_complaint_${message.author.id}`)
@@ -79,21 +84,34 @@ module.exports = {
             if(check !== null && timeout - (Date.now() - check) > 0) {
               const ms = require("pretty-ms")
               const timeLeft = ms(timeout - (Date.now() - check))
-              message.channel.send({ content: `> You've complained someone recently.\n> There is a Five Minute Cooldown to complain users.\n> Try \`.complain\` again in \`${timeLeft}\``});
+              message.channel.send({ content: `> You've complained someone recently.\n> There is a cooldown to complain users.\n> Try \`.complain\` again in \`${timeLeft}\``});
               message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
               message.react('875428843454865439');
               return
+            }
+        
+        	if (member.roles.cache.some(role => role.name === 'Verified Trader')) {
+                if(usercomplaint === null) {
+                  complaints.set(`${player.uuid}`, (complaints.get(`${player.uuid}`) + 1))
+                  db.set(`${player.uuid}_complaint_${message.author.id}`, 1)
+                  message.channel.send({ content: `> You've complained **${player.username}**\n> You are able to complain another person in one minute.`})
+                  db.set(`complainCheck_${message.author.id}`, Date.now())
+                  message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+                  message.react('875428843454865439');
+                  return
+            	}
+            } else {
+                if(usercomplaint === null) {
+                  complaints.set(`${player.uuid}`, (complaints.get(`${player.uuid}`) + 1))
+                  db.set(`${player.uuid}_complaint_${message.author.id}`, 1)
+                  message.channel.send({ content: `> You've complained **${player.username}**\n> You are able to complain another person in five minutes.`})
+                  db.set(`complainCheck_${message.author.id}`, Date.now())
+                  message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+                  message.react('875428843454865439');
+                  return
+            	}
             }
 
-            if(usercomplaint === null) {
-              complaints.set(`${player.uuid}`, (complaints.get(`${player.uuid}`) + 1))
-              db.set(`${player.uuid}_complaint_${message.author.id}`, 1)
-              message.channel.send({ content: `> You've complained **${player.username}**\n> You are able to complain another person in Five Minutes.`})
-              db.set(`complainCheck_${message.author.id}`, Date.now())
-              message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-              message.react('875428843454865439');
-              return
-            }
         }); 
       }
     }
