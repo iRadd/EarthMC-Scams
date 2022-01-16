@@ -1,6 +1,8 @@
-const fs = require('fs');
-const { Client, Collection, Intents } = require('discord.js');
-const { prefix, token } = require('./config.json');
+const fs = require("fs");
+const { Client, Collection, Intents } = require("discord.js");
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v9");
+const { token, client_id, test_guild_id } = require("./config.json");
 
 const client = new Client({ 
 	intents: [
@@ -17,68 +19,129 @@ const client = new Client({
 	] 
 });
 
-client.commands = new Collection();
+const eventFiles = fs
+	.readdirSync("./events")
+	.filter((file) => file.endsWith(".js"));
 
-const logs = require('./logs');
-
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const slashCommandFiles = fs.readdirSync('./slashCommands').filter(file => file.endsWith('.js'));
-
-const slashCommands = [];
-
-client.slashCommands = new Collection();
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
-
-for (const file of slashCommandFiles) {
-	const slashCommand = require(`./slashCommands/${file}`);
-	slashCommands.push(slashCommand.data.toJSON());
-	client.slashCommands.set(slashCommand.data.name, slashCommand);
-}
-
-client.once('ready', () => {
-	console.log('Ready!');
-
-	client.user.setActivity('activity', { type: 'WATCHING' }, { name: `@iRadd scam me of Better Code (SMH) | ${client.guilds.cache.size}`})
-
-	// logs(client)
-});
-
-client.on('messageCreate', async message => {
-
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	const command = args.shift().toLowerCase();
-
-	if (!client.commands.has(command)) return;
-
-	if (message.channel.id !== '917222773380755456') return;
-
-	try {
-	 	client.commands.get(command).execute(message, args);
-	 } catch (error) {
-	 	console.error(error);
-	 	message.channel.send({ content: `> There was an error when executing this command\n> If this contiunes to happen, join the [Support Server](https://discord.gg/P3r5n6TDEN)`});
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args, client));
+	} else {
+		client.on(
+			event.name,
+			async (...args) => await event.execute(...args, client)
+		);
 	}
-});
+}
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+client.commands = new Collection();
+client.slashCommands = new Collection();
+client.buttonCommands = new Collection();
+client.selectCommands = new Collection();
+client.contextCommands = new Collection();
+client.cooldowns = new Collection();
+client.triggers = new Collection();
 
-	const command = client.slashCommands.get(interaction.commandName);
+const commandFolders = fs.readdirSync("./commands");
 
-	if (!command) return;
+for (const folder of commandFolders) {
+	const commandFiles = fs
+		.readdirSync(`./commands/${folder}`)
+		.filter((file) => file.endsWith(".js"));
+	for (const file of commandFiles) {
+		const command = require(`./commands/${folder}/${file}`);
+		client.commands.set(command.name, command);
+	}
+}
 
+const slashCommands = fs.readdirSync("./interactions/slash");
+
+for (const module of slashCommands) {
+	const commandFiles = fs
+		.readdirSync(`./interactions/slash/${module}`)
+		.filter((file) => file.endsWith(".js"));
+
+	for (const commandFile of commandFiles) {
+		const command = require(`./interactions/slash/${module}/${commandFile}`);
+		client.slashCommands.set(command.data.name, command);
+	}
+}
+
+const contextMenus = fs.readdirSync("./interactions/context-menus");
+
+for (const folder of contextMenus) {
+	const files = fs
+		.readdirSync(`./interactions/context-menus/${folder}`)
+		.filter((file) => file.endsWith(".js"));
+	for (const file of files) {
+		const menu = require(`./interactions/context-menus/${folder}/${file}`);
+		const keyName = `${folder.toUpperCase()} ${menu.data.name}`;
+		client.contextCommands.set(keyName, menu);
+	}
+}
+
+const buttonCommands = fs.readdirSync("./interactions/buttons");
+
+for (const module of buttonCommands) {
+	const commandFiles = fs
+		.readdirSync(`./interactions/buttons/${module}`)
+		.filter((file) => file.endsWith(".js"));
+
+	for (const commandFile of commandFiles) {
+		const command = require(`./interactions/buttons/${module}/${commandFile}`);
+		client.buttonCommands.set(command.id, command);
+	}
+}
+
+const selectMenus = fs.readdirSync("./interactions/select-menus");
+
+for (const module of selectMenus) {
+	 const commandFiles = fs
+		 .readdirSync(`./interactions/select-menus/${module}`)
+		 .filter((file) => file.endsWith(".js"));
+	 for (const commandFile of commandFiles) {
+		 const command = require(`./interactions/select-menus/${module}/${commandFile}`);
+		 client.selectCommands.set(command.id, command);
+	 }
+}
+
+const rest = new REST({ version: "9" }).setToken(token);
+
+const commandJsonData = [
+	...Array.from(client.slashCommands.values()).map((c) => c.data.toJSON()),
+	...Array.from(client.contextCommands.values()).map((c) => c.data),
+];
+
+(async () => {
 	try {
-		await command.execute(interaction);
+		console.log("Started refreshing application (/) commands.");
+
+		await rest.put(
+			/**
+			 * Routes.applicationCommands(client_id)
+			 */
+
+			Routes.applicationGuildCommands(client_id, test_guild_id),
+			{ body: commandJsonData }
+		);
+
+		console.log("Successfully reloaded application (/) commands.");
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
-});
+})();
+
+const triggerFolders = fs.readdirSync("./triggers");
+
+for (const folder of triggerFolders) {
+	const triggerFiles = fs
+		.readdirSync(`./triggers/${folder}`)
+		.filter((file) => file.endsWith(".js"));
+	for (const file of triggerFiles) {
+		const trigger = require(`./triggers/${folder}/${file}`);
+		client.triggers.set(trigger.name, trigger);
+	}
+}
 
 client.login(token);
