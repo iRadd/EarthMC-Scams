@@ -141,17 +141,17 @@ module.exports = {
             new MessageButton()
               .setCustomId(`compliment_${player.uuid}`)
               .setLabel('Compliment')
-              .setStyle('SUCCESS')
-              .setDisabled(true),
+              .setStyle('SUCCESS'),
             new MessageButton()
               .setCustomId(`complain_${player.uuid}`)
               .setLabel('Complain')
               .setStyle('DANGER')
-              .setDisabled(true)
           );
         
-	  db.set(`${message.author.id}_lastwho`, `${player.uuid}`);
-          message.channel.send({ content: `${user}, here is **${player.username}'s Profile**!`, embeds: [embed], components: [complimentComplainRow] });
+          message.channel.send({ content: `${user}, here is **${player.username}'s Profile**!`, embeds: [embed], components: [complimentComplainRow] });.then(sent => { 
+  	  let id = sent.id;
+	  db.set(`${id}_message_player`, `${player.uuid}`);
+});
           message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
           message.react('875428843454865439');
 
