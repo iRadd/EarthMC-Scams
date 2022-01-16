@@ -150,6 +150,7 @@ module.exports = {
               .setDisabled(true)
           );
         
+	  db.set(`${message.author.id}_lastwho`, `${player.uuid}`);
           message.channel.send({ content: `${user}, here is **${player.username}'s Profile**!`, embeds: [embed], components: [complimentComplainRow] });
           message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
           message.react('875428843454865439');
