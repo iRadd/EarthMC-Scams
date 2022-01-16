@@ -1,6 +1,6 @@
 {
   "name": "earthmc-marketplace",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Bot for EarthMC Marketplace",
   "main": "index.js",
   "scripts": {
