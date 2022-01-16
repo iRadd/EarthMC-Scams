@@ -65,7 +65,12 @@ module.exports = {
 
             const usercompliment = db.get(`${player.uuid}_compliment_${message.author.id}`)
             const check = db.get(`complimentCheck_${message.author.id}`)
-            const timeout = 300000;
+            var timeout = 300000;
+            if (member.roles.cache.some(role => role.name === 'Verified Trader')) {
+            	var timeout = 60000;
+            } else {
+                var timeout = 300000;
+            }
 
             if(usercompliment === 1) {
               db.delete(`${player.uuid}_compliment_${message.author.id}`)
@@ -79,20 +84,31 @@ module.exports = {
             if(check !== null && timeout - (Date.now() - check) > 0) {
               const ms = require("pretty-ms")
               const timeLeft = ms(timeout - (Date.now() - check))
-              message.channel.send({ content: `> You've complimented someone recently.\n> There is a Five Minute Cooldown to compliment users.\n> Try \`.compliment\` again in \`${timeLeft}\``});
+              message.channel.send({ content: `> You've complimented someone recently.\n> There is a cooldown to compliment users.\n> Try \`.compliment\` again in \`${timeLeft}\``});
               message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
               message.react('875428843454865439');
               return
             }
-
-            if(usercompliment === null) {
-              compliments.set(`${player.uuid}`, (compliments.get(`${player.uuid}`) + 1))
-              db.set(`${player.uuid}_compliment_${message.author.id}`, 1)
-              message.channel.send({ content: `> You've complimented **${player.username}**\n> You are able to compliment another person in Five (5) minutes.`})
-              db.set(`complimentCheck_${message.author.id}`, Date.now())
-              message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-              message.react('875428843454865439');
-              return
+			if (member.roles.cache.some(role => role.name === 'Verified Trader')) {
+                if(usercompliment === null) {
+                  compliments.set(`${player.uuid}`, (compliments.get(`${player.uuid}`) + 1))
+                  db.set(`${player.uuid}_compliment_${message.author.id}`, 1)
+                  message.channel.send({ content: `> You've complimented **${player.username}**\n> You are able to compliment another person in one minute.`})
+                  db.set(`complimentCheck_${message.author.id}`, Date.now())
+                  message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+                  message.react('875428843454865439');
+                  return
+                }
+            } else {
+                if(usercompliment === null) {
+                  compliments.set(`${player.uuid}`, (compliments.get(`${player.uuid}`) + 1))
+                  db.set(`${player.uuid}_compliment_${message.author.id}`, 1)
+                  message.channel.send({ content: `> You've complimented **${player.username}**\n> You are able to compliment another person in five minutes.`})
+                  db.set(`complimentCheck_${message.author.id}`, Date.now())
+                  message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+                  message.react('875428843454865439');
+                  return
+                }
             }
         }); 
       }
