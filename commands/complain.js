@@ -66,7 +66,7 @@ module.exports = {
             const usercomplaint = db.get(`${player.uuid}_complaint_${message.author.id}`)
             const check = db.get(`complainCheck_${message.author.id}`)
             var timeout = 300000;
-            if (member.roles.cache.has('/*verified trader id here so its more secure*/')) {
+            if (member.roles.cache.has('855081624956960788')) {
             	var timeout = 60000;
             } else {
                 var timeout = 300000;
@@ -90,7 +90,7 @@ module.exports = {
               return
             }
         
-        	if (member.roles.cache.has('/*verified trader id here so its more secure*/')) {
+        	if (member.roles.cache.has('855081624956960788')) {
                 if(usercomplaint === null) {
                   complaints.set(`${player.uuid}`, (complaints.get(`${player.uuid}`) + 1))
                   db.set(`${player.uuid}_complaint_${message.author.id}`, 1)
