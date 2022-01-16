@@ -30,7 +30,7 @@ module.exports = {
           message.channel.send({ content: `> That is not a valid username, if this is a mistake, please contact \`iRadd#7003\``})
           message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
           message.react('875428843454865439');
-          return
+          return 
         }
 
           var compliments = new db.table('compliments')
